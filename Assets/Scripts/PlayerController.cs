@@ -5,50 +5,51 @@ using UnityEngine.AI;
 
 public class PlayerController : MonoBehaviour
 {
-    private Camera cam;
-    private NavMeshAgent agent;
-    private CharacterController character;
+    // Components
+    public Camera cam { get; private set; }
+    public NavMeshAgent agent { get; private set; }
+    public CharacterController character { get; private set; }
+    public Animator animator { get; private set; }
 
-    [SerializeField]
-    private Animator animator;
-
-    private Vector3 moveDirection = Vector3.zero;
+    // States
+    public PlayerStateBase currentState { get; private set; }
+    public PlayerStateRun stateRun { get; private set; }
+    public PlayerStateStop stateStop { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
+        // Setup components
         cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         agent = GetComponent<NavMeshAgent>();
         character = GetComponent<CharacterController>();
+        animator = GetComponentInChildren<Animator>();
+
+        // Setup states
+        stateRun = new PlayerStateRun();
+        stateStop = new PlayerStateStop();
+
+        ChangeState(stateStop);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
+        currentState.Update(this);
+    }
 
-            if (Physics.Raycast(ray, out hit))
-            {
-                agent.SetDestination(hit.point);
-            }
+    public void ChangeState(PlayerStateBase newState)
+    {
+        if (currentState != null)
+        {
+            currentState.LeaveState(this);
         }
 
-        moveDirection = agent.desiredVelocity;
+        currentState = newState;
 
-        // Face in direction of movement
-        if (moveDirection.magnitude > float.Epsilon)
+        if (currentState != null)
         {
-            transform.rotation = Quaternion.LookRotation(moveDirection);
-        }
-
-        animator.SetFloat("Forward", moveDirection.magnitude);
-
-        if (agent.remainingDistance > agent.stoppingDistance)
-        {
-            character.Move(agent.desiredVelocity * Time.deltaTime);
+            currentState.EnterState(this);
         }
     }
 }

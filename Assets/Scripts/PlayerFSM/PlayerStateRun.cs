@@ -1,0 +1,35 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerStateRun : PlayerStateBase
+{
+    public override void EnterState(PlayerController player)
+    {
+        player.animator.speed = 1;
+    }
+
+    public override void Update(PlayerController player)
+    {
+        // Face in direction of movement
+        if (player.agent.desiredVelocity.magnitude > float.Epsilon)
+        {
+            player.transform.rotation = Quaternion.LookRotation(player.agent.desiredVelocity);
+            player.animator.SetFloat("Forward", player.agent.desiredVelocity.magnitude);
+        }
+
+        if (player.agent.remainingDistance > player.agent.stoppingDistance)
+        {
+            player.character.Move(player.agent.desiredVelocity * Time.deltaTime);
+        }
+        else
+        {
+            player.ChangeState(player.stateStop);
+        }
+    }
+
+    public override void LeaveState(PlayerController player)
+    {
+        player.animator.speed = 0;
+    }
+}
