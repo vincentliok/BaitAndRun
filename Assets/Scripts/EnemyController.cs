@@ -2,33 +2,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.SceneManagement;
 
-public class PlayerController : MonoBehaviour
+public class EnemyController : MonoBehaviour
 {
     // Components
-    public Camera cam { get; private set; }
     public NavMeshAgent agent { get; private set; }
     public CharacterController character { get; private set; }
     public Animator animator { get; private set; }
 
     // States
-    public PlayerStateBase currentState { get; private set; }
-    public PlayerStateRun stateRun { get; private set; }
-    public PlayerStateStop stateStop { get; private set; }
+    public EnemyStateBase currentState { get; private set; }
+    public EnemyStateChase stateChase { get; private set; }
+    public EnemyStateStop stateStop { get; private set; }
+
+    // Reference to player
+    public GameObject target { get; private set; }
 
     // Start is called before the first frame update
     void Start()
     {
         // Setup components
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         agent = GetComponent<NavMeshAgent>();
         character = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
 
         // Setup states
-        stateRun = new PlayerStateRun();
-        stateStop = new PlayerStateStop();
+        stateChase = new EnemyStateChase();
+        stateStop = new EnemyStateStop();
+
+        // Find player
+        target = GameObject.Find("Player");
 
         ChangeState(stateStop);
     }
@@ -39,7 +42,7 @@ public class PlayerController : MonoBehaviour
         currentState.Update(this);
     }
 
-    public void ChangeState(PlayerStateBase newState)
+    public void ChangeState(EnemyStateBase newState)
     {
         if (currentState != null)
         {
@@ -51,14 +54,6 @@ public class PlayerController : MonoBehaviour
         if (currentState != null)
         {
             currentState.EnterState(this);
-        }
-    }
-
-    private void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        if (hit.gameObject.layer == 8)
-        {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
