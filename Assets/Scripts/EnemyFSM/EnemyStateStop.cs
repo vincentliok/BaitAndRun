@@ -12,7 +12,7 @@ public class EnemyStateStop : EnemyStateBase
     public override void Update(EnemyController enemy)
     {
         float dist = Vector3.Distance(enemy.target.transform.position, enemy.transform.position);
-        if (dist < 5)
+        if (dist < enemy.aggroRadius)
         {
             enemy.ChangeState(enemy.stateChase);
         }

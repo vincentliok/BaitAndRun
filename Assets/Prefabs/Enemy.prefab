@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7698441907940920388}
   - component: {fileID: 7698441907940920399}
   - component: {fileID: 4202190007702841554}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,7 +44,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.1
-  m_Speed: 4
+  m_Speed: 3
   m_Acceleration: 15
   avoidancePriority: 50
   m_AngularSpeed: 180
@@ -86,6 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41599af78d8a2e41ae9de84a4ce5af2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aggroRadius: 10
 --- !u!1001 &7698441908670660993
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -13,7 +13,7 @@ public class PlayerStateStop : PlayerStateBase
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Ray ray = player.cam.ScreenPointToRay(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))

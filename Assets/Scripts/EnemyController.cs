@@ -5,6 +5,9 @@ using UnityEngine.AI;
 
 public class EnemyController : MonoBehaviour
 {
+    // Adjust in editor
+    public float aggroRadius;
+
     // Components
     public NavMeshAgent agent { get; private set; }
     public CharacterController character { get; private set; }

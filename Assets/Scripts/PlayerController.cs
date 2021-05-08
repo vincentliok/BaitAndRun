@@ -7,10 +7,15 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     // Components
-    public Camera cam { get; private set; }
     public NavMeshAgent agent { get; private set; }
     public CharacterController character { get; private set; }
     public Animator animator { get; private set; }
+
+    // Camera
+    [SerializeField]
+    private Vector3 cameraOffset;
+    [SerializeField]
+    private Vector3 cameraRotation;
 
     // States
     public PlayerStateBase currentState { get; private set; }
@@ -21,10 +26,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         // Setup components
-        cam = GameObject.Find("Main Camera").GetComponent<Camera>();
         agent = GetComponent<NavMeshAgent>();
         character = GetComponent<CharacterController>();
         animator = GetComponentInChildren<Animator>();
+
+        // Setup camera
+        Camera.main.transform.rotation = Quaternion.Euler(cameraRotation);
 
         // Setup states
         stateRun = new PlayerStateRun();
@@ -37,6 +44,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         currentState.Update(this);
+    }
+
+    // Always do camera follow code last, after player has moved.
+    void LateUpdate()
+    {
+        Camera.main.transform.position = transform.position + cameraOffset;
     }
 
     public void ChangeState(PlayerStateBase newState)
@@ -56,7 +69,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (hit.gameObject.layer == 8)
+        if (hit.gameObject.tag == "Enemy")
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Goal")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
