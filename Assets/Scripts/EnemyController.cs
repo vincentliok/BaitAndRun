@@ -7,6 +7,7 @@ public class EnemyController : MonoBehaviour
 {
     // Adjust in editor
     public float aggroRadius;
+    public float maxCorpseTime;
 
     // Components
     public NavMeshAgent agent { get; private set; }
@@ -17,9 +18,15 @@ public class EnemyController : MonoBehaviour
     public EnemyStateBase currentState { get; private set; }
     public EnemyStateChase stateChase { get; private set; }
     public EnemyStateStop stateStop { get; private set; }
+    public EnemyStateDie stateDie { get; private set; }
 
     // Reference to player
     public GameObject target { get; private set; }
+
+    // Helper variables
+    private bool isDead;
+    [System.NonSerialized]
+    public float corpseTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -32,11 +39,16 @@ public class EnemyController : MonoBehaviour
         // Setup states
         stateChase = new EnemyStateChase();
         stateStop = new EnemyStateStop();
+        stateDie = new EnemyStateDie();
+
+        ChangeState(stateStop);
 
         // Find player
         target = GameObject.Find("Player");
 
-        ChangeState(stateStop);
+        // Setup variables
+        isDead = false;
+        corpseTimer = 0.0f;
     }
 
     // Update is called once per frame
@@ -57,6 +69,15 @@ public class EnemyController : MonoBehaviour
         if (currentState != null)
         {
             currentState.EnterState(this);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Spikes" && !isDead)
+        {
+            ChangeState(stateDie);
+            isDead = true;
         }
     }
 }

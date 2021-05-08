@@ -87,6 +87,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aggroRadius: 10
+  maxCorpseTime: 5
 --- !u!1001 &7698441908670660993
 PrefabInstance:
   m_ObjectHideFlags: 0
