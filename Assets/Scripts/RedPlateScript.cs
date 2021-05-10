@@ -17,14 +17,10 @@ public class RedPlateScript : MonoBehaviour
         isPressed = false;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     private void OnTriggerEnter(Collider other)
     {
+        // If enemy steps on pressure plate, lower own position and open door
+
         if (other.gameObject.tag == "Enemy" && !isPressed)
         {
             transform.position += new Vector3(0.0f, -0.4f, 0.0f);

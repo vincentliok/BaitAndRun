@@ -6,9 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class TextFadeScript : MonoBehaviour
 {
+    // Components
     private Text levelText;
+
+    // Helper variables
     private float curTime;
     private Vector4 curColor;
+
+    // Adjust in editor
     [SerializeField]
     private float maxTime;
 
@@ -16,6 +21,7 @@ public class TextFadeScript : MonoBehaviour
     void Start()
     {
         levelText = GetComponent<Text>();
+        // Get level number
         levelText.text = "Level " + SceneManager.GetActiveScene().buildIndex;
         curTime = 0.0f;
     }
@@ -23,9 +29,10 @@ public class TextFadeScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Use EaseInQuint on alpha value to fade out text
+
         curTime = Mathf.Clamp(curTime + Time.deltaTime, 0.0f, maxTime);
         curColor = new Color(1.0f, 1.0f, 1.0f, EaseInQuint(1.0f, 0.0f, curTime/maxTime));
-
         levelText.color = curColor;
     }
 

@@ -69,6 +69,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        // If player hits enemy then restart level
+
         if (hit.gameObject.tag == "Enemy")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -77,6 +79,9 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // If player reaches goal, then load next scene
+        // If on the last level, loop back to title screen
+
         if (other.gameObject.tag == "Goal")
         {
             if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
@@ -88,6 +93,8 @@ public class PlayerController : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             }
         }
+
+        // If player hits spikes then restart level
 
         if (other.gameObject.tag == "Spikes")
         {

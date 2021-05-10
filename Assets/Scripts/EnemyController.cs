@@ -74,6 +74,8 @@ public class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // If enemy hits spikes, then die
+
         if (other.gameObject.tag == "Spikes" && !isDead)
         {
             ChangeState(stateDie);

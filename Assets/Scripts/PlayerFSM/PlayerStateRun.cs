@@ -6,6 +6,7 @@ public class PlayerStateRun : PlayerStateBase
 {
     public override void EnterState(PlayerController player)
     {
+        // Unfreeze
         player.animator.speed = 1;
     }
 
@@ -18,8 +19,10 @@ public class PlayerStateRun : PlayerStateBase
             player.animator.SetFloat("Forward", player.agent.desiredVelocity.magnitude);
         }
 
+        // If not there yet, keep going, otherwise change to stop state
         if (player.agent.remainingDistance > player.agent.stoppingDistance)
         {
+            // Move along path
             player.character.Move(player.agent.desiredVelocity * Time.deltaTime);
         }
         else
@@ -30,6 +33,7 @@ public class PlayerStateRun : PlayerStateBase
 
     public override void LeaveState(PlayerController player)
     {
+        // Freeze
         player.animator.speed = 0;
     }
 }
