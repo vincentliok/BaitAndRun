@@ -92,7 +92,6 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.tag == "Spikes")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            Debug.Log(SceneManager.sceneCountInBuildSettings);
         }
     }
 }
