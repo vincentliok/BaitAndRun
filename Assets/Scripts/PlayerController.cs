@@ -79,12 +79,20 @@ public class PlayerController : MonoBehaviour
     {
         if (other.gameObject.tag == "Goal")
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            if (SceneManager.GetActiveScene().buildIndex == SceneManager.sceneCountInBuildSettings - 1)
+            {
+                SceneManager.LoadScene(0);
+            }
+            else
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
         }
 
         if (other.gameObject.tag == "Spikes")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            Debug.Log(SceneManager.sceneCountInBuildSettings);
         }
     }
 }
